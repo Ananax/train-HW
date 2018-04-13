@@ -11,6 +11,19 @@ $(document).ready(function () {
 
     var database = firebase.database();
 
+    $("#submitButton").on("click", function() {
+        event.preventDefault();
 
+
+    var trainName = $("trainName").val().trim();
+    var destination = $("destination").val().trim();
+    var militaryTime = $("militaryTime").val().trim();
+    var frequency = $("frequency").val().trim();
+
+    database.ref().push({
+        trainName: trainName,
+        destination: destination,
+        militaryTime: militaryTime,
+        frequency: frequency
 
 });
