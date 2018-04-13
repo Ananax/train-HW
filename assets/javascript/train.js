@@ -11,15 +11,16 @@ $(document).ready(function () {
 
     var database = firebase.database();
 
-    $("#submitButton").on("click", function(event) {
+    $("#submitButton").on("click", function() {
         event.preventDefault();
 
-
+            // Capturing the values
             var trainName = $("trainName").val().trim();
             var destination = $("destination").val().trim();
             var militaryTime = $("militaryTime").val().trim();
             var frequency = $("frequency").val().trim();
 
+            //pushing to database
         database.ref().push({
             trainName: trainName,
             destination: destination,
@@ -28,51 +29,24 @@ $(document).ready(function () {
 
         });
     });
-
+    //For Firebase
     database.ref().on("child_added", function (childSnapshot) {
 
-        var newTrain = childSnapshot.val().trainName;
-        var newLocation = childSnapshot.val().destination;
-        var newFirstTrain = childSnapshot.val().militaryTime;
-        var newFreq = childSnapshot.val().frequency;
+        var newTrainName = childSnapshot.val().trainName;
+        var newDestination = childSnapshot.val().destination;
+        var newMilitaryTime = childSnapshot.val().militaryTime;
+        var newFrequency = childSnapshot.val().frequency;
+        
+        //current time
+       var currentTime = moment();
+
+       // difference formula
+       // time until next train
+       // next train
+       //push them to to Train Name/Destination/Freq etc.
+       
     
-        // First Time (pushed back 1 year to make sure it comes before current time)
-        var startTimeConverted = moment(newFirstTrain, "hh:mm").subtract(1, "years");
-    
-        // Current Time
-        var currentTime = moment();
-    
-        // Difference between the times
-        var diffTime = moment().diff(moment(startTimeConverted), "minutes");
-    
-        // Time apart (remainder)
-        var tRemainder = diffTime % newFreq;
-    
-        // Minute(s) Until Train
-        var tMinutesTillTrain = newFreq - tRemainder;
-    
-        // Next Train
-        var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-        var catchTrain = moment(nextTrain).format("HH:mm");
-    
-        // Display On Page
-        $("#table-list").append(
-          ' <tr><td>' + newTrain +
-          ' </td><td>' + newLocation +
-          ' </td><td>' + newFreq +
-          ' </td><td>' + catchTrain +
-          ' </td><td>' + tMinutesTillTrain + ' </td></tr>');
-    
-        // Clear input fields
-        $("#trainName, #destination, #firstTrain, #interval").val("");
-        return false;
-      },
-        //Handle the errors
-        function (errorObject) {
-          console.log("Errors handled: " + errorObject.code);
-        });
-    
-    }); //end document ready
+    });
     
 
 
